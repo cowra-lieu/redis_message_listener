@@ -31,14 +31,24 @@ public class RedisConfig {
         return new JedisConnectionFactory(rsc);
     }
 
-    @Bean
+    @Bean("topic4Icer")
     ChannelTopic icer_update_topic() {
         return new ChannelTopic("icer:update");
     }
 
+    @Bean("topic4CoreData")
+    ChannelTopic core_data_update_topic() {
+        return new ChannelTopic("core_data:update");
+    }
+
     @Bean
-    MessageListenerAdapter messageListener() {
+    MessageListenerAdapter messageListener4Icer() {
         return new MessageListenerAdapter( new IcerUpdateListener() );
+    }
+
+    @Bean
+    MessageListenerAdapter messageListener4CoreData() {
+        return new MessageListenerAdapter( new CoreDataUpdateListener() );
     }
 
     @Bean
@@ -46,7 +56,8 @@ public class RedisConfig {
         final RedisMessageListenerContainer container = new RedisMessageListenerContainer();
 
         container.setConnectionFactory( jedisConnectionFactory() );
-        container.addMessageListener( messageListener(), icer_update_topic() );
+        container.addMessageListener( messageListener4Icer(), icer_update_topic() );
+        container.addMessageListener( messageListener4CoreData(), core_data_update_topic() );
 
         return container;
     }

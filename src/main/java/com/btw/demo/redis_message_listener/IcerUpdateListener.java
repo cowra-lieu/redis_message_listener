@@ -11,7 +11,7 @@ public class IcerUpdateListener implements MessageListener {
 
     @Override
     public void onMessage(final Message message, final byte[] pattern ) {
-        System.out.println( "Message received: " + message.toString() );
+        System.out.println( "[ICER] Message received: " + message.toString() );
         try {
             IcerUpdate icerUpdate = objectMapper.readValue(message.toString(), IcerUpdate.class);
             System.out.println(icerUpdate.isSmallUpdate());
